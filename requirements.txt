@@ -4,7 +4,6 @@ django-filter
 drf-extra-fields
 pygments
 djangorestframework-simplejwt
-djoser
 beautifulsoup4
 nh3
 drf-nested-routers
