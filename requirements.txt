@@ -8,3 +8,4 @@ beautifulsoup4
 nh3
 drf-nested-routers
 dj-database-url
+django-environ
