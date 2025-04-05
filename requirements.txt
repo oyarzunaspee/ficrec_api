@@ -8,4 +8,4 @@ djoser
 beautifulsoup4
 nh3
 drf-nested-routers
-python-dotenv
+dj-database-url
