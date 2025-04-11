@@ -8,13 +8,42 @@ from rest_framework import viewsets, mixins, generics
 from rest_framework.authentication import BasicAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 class AuthView(generics.CreateAPIView):
     permission_classes = [AllowAny]
     authentication_classes = [BasicAuthentication]
     serializer_class = serializers.RegisterSerializer
 
+class CustomTokenObtainView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            raise InvalidToken(e.args[0]) from e
+        
+        token, refresh = serializer.validated_data
+        response = Response(token, status=status.HTTP_200_OK)
+        response.set_cookie("refresh", refresh, httponly=True, samesite="None", secure=True)
+        return response
+
+class CustomTokenRefreshView(generics.GenericAPIView):
+    permission_classes = [AllowAny]
+    authentication_classes = [BasicAuthentication]
+    serializer_class = serializers.CustomTokenRefreshSerializer
+
+    def post(self, request, *args, **kwargs):
+        refresh = request.COOKIES.get("refresh")
+        serializer = self.get_serializer(data=dict(refresh=refresh))
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            raise InvalidToken(e.args[0]) from e
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 class ReactivateView(generics.CreateAPIView):
     permission_classes = [AllowAny]

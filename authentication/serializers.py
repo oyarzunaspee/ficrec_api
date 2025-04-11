@@ -1,6 +1,50 @@
 from authentication.models import Reader
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainSerializer, TokenRefreshSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.settings import api_settings
+from django.contrib.auth.models import update_last_login
+from typing import Any
+from django.contrib.auth import get_user_model
+from rest_framework.exceptions import AuthenticationFailed
+
+class CustomTokenSerializer(TokenObtainSerializer):
+    token_class = RefreshToken
+
+    def validate(self, attrs: dict[str, Any]) -> dict[str, str]:
+        data = super().validate(attrs)
+
+        refresh = self.get_token(self.user)
+
+        data["token"] = str(refresh.access_token)
+
+        if api_settings.UPDATE_LAST_LOGIN:
+            update_last_login(None, self.user)
+
+        return data, str(refresh)
+    
+class CustomTokenRefreshSerializer(TokenRefreshSerializer):
+    refresh = serializers.CharField(write_only=True)
+
+    def validate(self, attrs: dict[str, Any]) -> dict[str, str]:
+        refresh = self.token_class(attrs["refresh"])
+
+        user_id = refresh.payload.get(api_settings.USER_ID_CLAIM, None)
+        if user_id and (
+            user := get_user_model().objects.get(
+                **{api_settings.USER_ID_FIELD: user_id}
+            )
+        ):
+            if not api_settings.USER_AUTHENTICATION_RULE(user):
+                raise AuthenticationFailed(
+                    self.error_messages["no_active_account"],
+                    "no_active_account",
+                )
+
+        data = dict(token = str(refresh.access_token))
+        
+        return data
 
 class ReactivateSerializer(serializers.Serializer):
     username = serializers.CharField(min_length=4, trim_whitespace=True)
