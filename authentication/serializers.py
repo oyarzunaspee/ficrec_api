@@ -44,9 +44,9 @@ class CustomTokenRefreshSerializer(serializers.Serializer):
                     "no_active_account",
                 )
 
-        data = dict(token = str(refresh.access_token), username= user.username)
+            data = dict(token = str(refresh.access_token), username= user.username)
         
-        return data
+            return data
 
 class ReactivateSerializer(serializers.Serializer):
     username = serializers.CharField(min_length=4, trim_whitespace=True)
