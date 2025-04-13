@@ -50,7 +50,7 @@ class LogoutView(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         response = Response(status=status.HTTP_200_OK)
-        response.delete_cookie("refresh", samesite="None", secure=True)
+        response.delete_cookie("refresh")
 
 class ReactivateView(generics.CreateAPIView):
     permission_classes = [AllowAny]
