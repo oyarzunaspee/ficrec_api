@@ -36,10 +36,8 @@ class CustomTokenRefreshSerializer(serializers.Serializer):
         try:
             user = User.objects.get(pk=user_id)
         except:
-            raise AuthenticationFailed(
-                self.error_messages["bad_token"],
-                "bad_token",
-            )
+            raise serializers.ValidationError("Bad Token")
+        
         if not api_settings.USER_AUTHENTICATION_RULE(user):
             raise AuthenticationFailed(
                 self.error_messages["no_active_account"],
