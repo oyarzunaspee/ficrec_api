@@ -31,15 +31,16 @@ class CustomTokenRefreshSerializer(serializers.Serializer):
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, str]:
         refresh = self.token_class(self.context["view"].request.COOKIES.get("refresh"))
-        if refresh == "":
+            
+        user_id = refresh.payload.get("user_id", None)
+        try:
+            user = User.objects.get(pk=user_id)
+        except:
             raise AuthenticationFailed(
                 self.error_messages["bad_token"],
                 "bad_token",
             )
-
-        user_id = refresh.payload.get("user_id", None)
-        user = User.objects.get(pk=user_id)
-        if user and not api_settings.USER_AUTHENTICATION_RULE(user):
+        if not api_settings.USER_AUTHENTICATION_RULE(user):
             raise AuthenticationFailed(
                 self.error_messages["no_active_account"],
                 "no_active_account",
