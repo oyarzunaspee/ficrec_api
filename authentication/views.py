@@ -36,7 +36,7 @@ class CustomTokenRefreshView(generics.GenericAPIView):
     serializer_class = serializers.CustomTokenRefreshSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer()
+        serializer = self.get_serializer(data=dict())
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
