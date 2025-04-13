@@ -36,14 +36,20 @@ class CustomTokenRefreshView(generics.GenericAPIView):
     serializer_class = serializers.CustomTokenRefreshSerializer
 
     def post(self, request, *args, **kwargs):
-        refresh = request.COOKIES.get("refresh")
-        serializer = self.get_serializer(data=dict(refresh=refresh))
-
+        serializer = self.get_serializer()
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
             raise InvalidToken(e.args[0]) from e
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+class LogoutView(generics.GenericAPIView):
+    permission_classes = [AllowAny]
+    authentication_classes = [BasicAuthentication]
+
+    def post(self, request, *args, **kwargs):
+        response = Response(status=status.HTTP_200_OK)
+        response.delete_cookie("refresh", samesite="None", secure=True)
 
 class ReactivateView(generics.CreateAPIView):
     permission_classes = [AllowAny]

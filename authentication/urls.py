@@ -12,6 +12,7 @@ urlpatterns = [
     path("login/", views.CustomTokenObtainView.as_view(), name="token_obtain_pair"),
     path("verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("refresh/", views.CustomTokenRefreshView.as_view(), name="token_refresh"),
+    path("logout/", views.LogoutView.as_view(), name="logout"),
     path('reactivate/', views.ReactivateView.as_view(), name='reactivate'),
     path("", include(router.urls))
 ]
