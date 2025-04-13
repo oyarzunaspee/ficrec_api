@@ -33,9 +33,7 @@ class CustomTokenRefreshSerializer(serializers.Serializer):
         refresh = self.token_class(self.context["view"].request.COOKIES.get("refresh"))
 
         user_id = refresh.payload.get(api_settings.USER_ID_CLAIM, None)
-        user = get_user_model().objects.get(
-                **{api_settings.USER_ID_FIELD: user_id}
-        )
+        user = get_user_model().objects.get(pk=user_id)
         if user_id and user:
             if not api_settings.USER_AUTHENTICATION_RULE(user):
                 raise AuthenticationFailed(
