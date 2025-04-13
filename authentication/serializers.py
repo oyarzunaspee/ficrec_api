@@ -1,7 +1,7 @@
 from authentication.models import Reader
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainSerializer, TokenRefreshSerializer
+from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
@@ -25,8 +25,9 @@ class CustomTokenSerializer(TokenObtainSerializer):
 
         return data, str(refresh)
     
-class CustomTokenRefreshSerializer(TokenRefreshSerializer):
-    refresh = serializers.CharField(write_only=True)
+class CustomTokenRefreshSerializer(serializers.Serializer):
+    access = serializers.CharField(read_only=True)
+    token_class = RefreshToken
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, str]:
         refresh = self.token_class(attrs["refresh"])
