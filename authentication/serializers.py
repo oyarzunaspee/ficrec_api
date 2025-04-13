@@ -39,7 +39,7 @@ class CustomTokenRefreshSerializer(serializers.Serializer):
 
         user_id = refresh.payload.get("user_id", None)
         user = User.objects.get(pk=user_id)
-        if not api_settings.USER_AUTHENTICATION_RULE(user):
+        if user and not api_settings.USER_AUTHENTICATION_RULE(user):
             raise AuthenticationFailed(
                 self.error_messages["no_active_account"],
                 "no_active_account",
