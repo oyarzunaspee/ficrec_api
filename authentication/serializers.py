@@ -30,7 +30,7 @@ class CustomTokenRefreshSerializer(serializers.Serializer):
     token_class = RefreshToken
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, str]:
-        refresh = self.context["view"].request.COOKIES.get("refresh")
+        refresh = self.token_class(self.context["view"].request.COOKIES.get("refresh"))
 
         user_id = refresh.payload.get(api_settings.USER_ID_CLAIM, None)
         if user_id and (
