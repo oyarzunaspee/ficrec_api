@@ -33,15 +33,18 @@ class CustomTokenRefreshSerializer(serializers.Serializer):
         refresh = self.token_class(self.context["view"].request.COOKIES.get("refresh"))
 
         user_id = refresh.payload.get(api_settings.USER_ID_CLAIM, None)
-        user = get_user_model().objects.get(pk=user_id)
-        if user_id and user:
+        if user_id and (
+            user := get_user_model().objects.get(
+                **{api_settings.USER_ID_FIELD: user_id}
+            )
+        ):
             if not api_settings.USER_AUTHENTICATION_RULE(user):
                 raise AuthenticationFailed(
                     self.error_messages["no_active_account"],
                     "no_active_account",
                 )
 
-        data = dict(token = str(refresh.access_token), username=user.username)
+        data = dict(token = str(refresh.access_token))
         
         return data
 
