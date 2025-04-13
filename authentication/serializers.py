@@ -18,6 +18,7 @@ class CustomTokenSerializer(TokenObtainSerializer):
         refresh = self.get_token(self.user)
 
         data["token"] = str(refresh.access_token)
+        data["username"] = self.user.username
 
         if api_settings.UPDATE_LAST_LOGIN:
             update_last_login(None, self.user)
