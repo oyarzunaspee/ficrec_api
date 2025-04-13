@@ -26,18 +26,17 @@ class CustomTokenSerializer(TokenObtainSerializer):
         return data, str(refresh)
     
 class CustomTokenRefreshSerializer(serializers.Serializer):
-    access = serializers.CharField(read_only=True)
+    token = serializers.CharField(read_only=True)
     token_class = RefreshToken
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, str]:
         refresh = self.token_class(self.context["view"].request.COOKIES.get("refresh"))
 
         user_id = refresh.payload.get(api_settings.USER_ID_CLAIM, None)
-        if user_id and (
-            user := get_user_model().objects.get(
+        user = get_user_model().objects.get(
                 **{api_settings.USER_ID_FIELD: user_id}
-            )
-        ):
+        )
+        if user_id and user:
             if not api_settings.USER_AUTHENTICATION_RULE(user):
                 raise AuthenticationFailed(
                     self.error_messages["no_active_account"],
