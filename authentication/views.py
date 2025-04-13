@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
 from authentication import serializers
 
-from rest_framework import viewsets, mixins, generics
+from rest_framework import viewsets, mixins, generics, views
 from rest_framework.authentication import BasicAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -30,7 +30,7 @@ class CustomTokenObtainView(TokenObtainPairView):
         response.set_cookie("refresh", refresh, httponly=True, samesite="None", secure=True)
         return response
 
-class CustomTokenRefreshView(generics.GenericAPIView):
+class CustomTokenRefreshView(views.APIView):
     permission_classes = [AllowAny]
     authentication_classes = [BasicAuthentication]
     serializer_class = serializers.CustomTokenRefreshSerializer
