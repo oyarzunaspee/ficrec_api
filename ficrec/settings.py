@@ -55,8 +55,6 @@ INSTALLED_APPS = [
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    "SIGNING_KEY": SECRET_KEY,
-    "TOKEN_OBTAIN_SERIALIZER": "authentication.serializers.CustomTokenSerializer",
 }
 
 

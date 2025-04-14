@@ -18,35 +18,39 @@ class CustomTokenSerializer(TokenObtainSerializer):
         refresh = self.get_token(self.user)
 
         data["token"] = str(refresh.access_token)
-        data["username"] = self.user.username
 
         if api_settings.UPDATE_LAST_LOGIN:
             update_last_login(None, self.user)
 
         return data, str(refresh)
     
+
+
 class CustomTokenRefreshSerializer(serializers.Serializer):
     token = serializers.CharField(read_only=True)
     token_class = RefreshToken
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, str]:
-        refresh = self.token_class(self.context["view"].request.COOKIES.get("refresh"))
-            
-        user_id = refresh.payload.get("user_id", None)
-        try:
-            user = User.objects.get(pk=user_id)
-        except:
-            raise serializers.ValidationError("Bad Token")
-        
-        if not api_settings.USER_AUTHENTICATION_RULE(user):
-            raise AuthenticationFailed(
-                self.error_messages["no_active_account"],
-                "no_active_account",
-            )
+        refresh = self.token_class(self.context)
 
-        data = dict(token = str(refresh.access_token), username = user.username)
-        
+        user_id = refresh.payload.get(api_settings.USER_ID_CLAIM, None)
+        if user_id and (
+            user := get_user_model().objects.get(
+                **{api_settings.USER_ID_FIELD: user_id}
+            )
+        ):
+            if not api_settings.USER_AUTHENTICATION_RULE(user):
+                raise AuthenticationFailed(
+                    self.error_messages["no_active_account"],
+                    "no_active_account",
+                )
+
+        data = {"token": str(refresh.access_token)}
+
         return data
+
+
+    
 
 class ReactivateSerializer(serializers.Serializer):
     username = serializers.CharField(min_length=4, trim_whitespace=True)
