@@ -36,7 +36,7 @@ class CustomTokenRefreshView(generics.GenericAPIView):
     authentication_classes = [BasicAuthentication]
     serializer_class = serializers.CustomTokenRefreshSerializer
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         refresh = request.COOKIES.get("refresh")
         serializer = serializers.CustomTokenRefreshSerializer(data=dict(), context=refresh)
         try:
