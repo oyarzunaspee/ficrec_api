@@ -51,7 +51,7 @@ class ToggleSerializer(serializers.Serializer):
         return collection
 
 class PrepareRecSerializer(serializers.Serializer):
-    notes = serializers.CharField(allow_null=True)
+    notes = serializers.CharField(allow_null=True, required=False)
     code = serializers.CharField(required=True, validators=[RegexValidator(CODE_REGEX)])
     
     def validate_code(self, value):
