@@ -19,4 +19,4 @@ class RecSerializer(ModelSerializer):
 class CollectionNameSerializer(ModelSerializer):
     class Meta:
         model = Collection
-        fields = ["uid", "name"]
+        fields = ["uid", "name", "private"]
