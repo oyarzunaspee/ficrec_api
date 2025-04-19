@@ -1,6 +1,6 @@
 from utils.fields import TagsField, CurrentModel
 from user_profile.models import Rec, Collection
-from rest_framework.serializers import ModelSerializer, HiddenField
+from rest_framework.serializers import ModelSerializer, HiddenField, SerializerMethodField
 
 class RecSerializer(ModelSerializer):
     author = TagsField()
@@ -17,6 +17,11 @@ class RecSerializer(ModelSerializer):
         # extra_kwargs = {'collection': {'write_only': True}}
 
 class CollectionNameSerializer(ModelSerializer):
+    recs = SerializerMethodField("rec_count")
+    
     class Meta:
         model = Collection
-        fields = ["uid", "name", "private"]
+        fields = ["uid", "name", "private", "recs"]
+
+    def rec_count(self, instance):
+        return instance.collection_recs.count()
