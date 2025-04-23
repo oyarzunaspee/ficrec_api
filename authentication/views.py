@@ -33,6 +33,7 @@ class CustomTokenObtainView(TokenObtainPairView):
 
 class CustomTokenRefreshView(generics.GenericAPIView):
     permission_classes = [AllowAny]
+    authentication_classes = [BasicAuthentication]
     serializer_class = serializers.CustomTokenRefreshSerializer
 
     def get(self, request, *args, **kwargs):
