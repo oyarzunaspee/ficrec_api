@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.core.validators import RegexValidator
 from authentication.models import Reader
-from user_profile.models import Collection
+from user_profile.models import Collection, Rec
 from user_profile.utils import CODE_REGEX
 from public.models import Saved
 from utils import fields as utils_fields
@@ -94,7 +94,12 @@ class PrepareRecSerializer(serializers.Serializer):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return serializer
-    
+
+class EditRecSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rec
+        fields = ["notes"]
+
 class SavedSerializer(serializers.ModelSerializer):
     title = serializers.CharField(source="rec.title")
     author = utils_fields.TagsField(source="rec.author")

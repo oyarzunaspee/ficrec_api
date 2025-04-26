@@ -11,6 +11,7 @@ from rest_framework import mixins, viewsets
 from user_profile import serializers
 from utils.mixins import CustomDestroyMixin
 
+
 class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.UpdateModelMixin):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
@@ -66,6 +67,7 @@ class RecViewSet(viewsets.GenericViewSet, CustomDestroyMixin, mixins.UpdateModel
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
     queryset = Rec.objects.filter(deleted=False, collection__deleted=False, collection__reader__user__is_active=True)
+    serializer_class = serializers.EditRecSerializer
     lookup_field = "uid"
 
     def get_queryset(self):
