@@ -20,7 +20,7 @@ class ReaderSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Reader
-        fields = ["uid", "username", "bio", "avatar", "collections"]
+        fields = ["uid", "username", "bio", "avatar", "collections", "highlight"]
         read_only_fields = ['uid', "username", "collections"]
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -35,11 +35,11 @@ class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
         exclude = ["created", "deleted"]
-        read_only_fields = ["uid", "recs", "private", "fandom", "ship", "warnings", "tags", "chapters"]
+        read_only_fields = ["uid", "recs", "private", "fandom", "ship", "warnings", "tags", "chapters", "summary"]
         extra_kwargs = {'reader': {'write_only': True}}
         
 class ToggleSerializer(serializers.Serializer):
-    toggle = serializers.ChoiceField(["private", "fandom", "ship", "warnings", "tags", "chapters"])
+    toggle = serializers.ChoiceField(["private", "fandom", "ship", "warnings", "tags", "chapters", "summary"])
 
     def save(self, **kwargs):
         collection = self.context["view"].get_object()

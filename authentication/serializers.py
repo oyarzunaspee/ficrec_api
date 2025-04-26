@@ -25,7 +25,6 @@ class CustomTokenSerializer(TokenObtainSerializer):
         return data, str(refresh)
     
 
-
 class CustomTokenRefreshSerializer(serializers.Serializer):
     token = serializers.CharField(read_only=True)
     token_class = RefreshToken
