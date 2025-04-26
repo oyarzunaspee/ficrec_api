@@ -18,7 +18,7 @@ class Collection(models.Model):
     summary = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['created']
+        ordering = ['-created']
 
     def __str__(self):
         return self.name
@@ -43,7 +43,7 @@ class Rec(models.Model):
     deleted = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['created']
+        ordering = ['-created']
 
     def __str__(self):
         return f"{self.title} - {self.author} ({self.collection.reader.user.username})"
