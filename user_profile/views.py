@@ -63,7 +63,7 @@ class CollectionViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins
         return Response(rec_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
 
-class RecViewSet(viewsets.GenericViewSet, CustomDestroyMixin, mixins.UpdateModelMixin):
+class RecViewSet(viewsets.GenericViewSet, CustomDestroyMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
     queryset = Rec.objects.filter(deleted=False, collection__deleted=False, collection__reader__user__is_active=True)
