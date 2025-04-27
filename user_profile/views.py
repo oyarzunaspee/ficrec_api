@@ -81,7 +81,7 @@ class RecViewSet(viewsets.GenericViewSet, CustomDestroyMixin, mixins.ListModelMi
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        serializer = serializers.EditRecSerializer
+        serializer = serializers.EditRecSerializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
