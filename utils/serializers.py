@@ -14,7 +14,6 @@ class RecSerializer(ModelSerializer):
     class Meta:
         model = Rec
         exclude = ["created", "deleted", "id"]
-        # extra_kwargs = {'collection': {'write_only': True}}
 
 class CollectionNameSerializer(ModelSerializer):
     recs = SerializerMethodField("rec_count")
