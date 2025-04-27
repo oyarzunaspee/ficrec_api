@@ -16,6 +16,7 @@ class Collection(models.Model):
     tags = models.BooleanField(default=False)
     chapters = models.BooleanField(default=False)
     summary = models.BooleanField(default=False)
+    characters = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-created']
