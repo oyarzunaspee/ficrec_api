@@ -39,7 +39,7 @@ class CollectionSerializer(serializers.ModelSerializer):
         extra_kwargs = {'reader': {'write_only': True}}
         
 class ToggleSerializer(serializers.Serializer):
-    toggle = serializers.ChoiceField(["private", "fandom", "ship", "warnings", "tags", "chapters", "summary"])
+    toggle = serializers.ChoiceField(["private", "fandom", "ship", "warnings", "tags", "chapters", "summary", "characters"])
 
     def save(self, **kwargs):
         collection = self.context["view"].get_object()
