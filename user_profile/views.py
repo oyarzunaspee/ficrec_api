@@ -32,7 +32,7 @@ class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         serializer = self.get_serializer(self.request.user.user_reader)
         return Response(serializer.data)
 
-    @action(["patch"], detail=False)
+    @action(["patch"], detail=False, url_path="update")
     def toggle_field(self, request, *args, **kwargs):
         serializer = self.get_serializer(self.request.user.user_reader, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
