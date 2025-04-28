@@ -12,7 +12,7 @@ from user_profile import serializers
 from utils.mixins import CustomDestroyMixin
 
 
-class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.UpdateModelMixin):
+class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
     serializer_class = serializers.ReaderSerializer
@@ -31,6 +31,13 @@ class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.Upda
     def list(self, request, format=None):
         serializer = self.get_serializer(self.request.user.user_reader)
         return Response(serializer.data)
+
+    @action(["patch"], detail=False)
+    def toggle_field(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.request.user.user_reader, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     
 class CollectionViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, CustomDestroyMixin):
