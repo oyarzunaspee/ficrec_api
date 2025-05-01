@@ -35,7 +35,7 @@ class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
         exclude = ["created", "deleted"]
-        read_only_fields = ["uid", "recs", "private", "fandom", "ship", "warnings", "tags", "chapters", "summary"]
+        read_only_fields = ["uid", "recs", "fandom", "ship", "warnings", "tags", "chapters", "summary"]
         extra_kwargs = {'reader': {'write_only': True}}
         
 class ToggleSerializer(serializers.Serializer):
