@@ -80,11 +80,15 @@ class AuthUserViewSet(mixins.DestroyModelMixin, viewsets.GenericViewSet):
 
     @action(["post"], detail=False, url_path="password", serializer_class=serializers.ResetPasswordSerializer)
     def change_password(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(instance=request.user, data=request.data)
         serializer.is_valid(raise_exception=True)
-        if not request.user.check_password(serializer.validated_data["password"]):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    @action(["post"], detail=False, url_path="verify", serializer_class=serializers.ResetPasswordSerializer)
+    def verify_password(self, request, *args, **kwargs):
+        if not request.user.check_password(request.data["password"]):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         return Response(status=status.HTTP_204_NO_CONTENT)
     
     @action(["post"], detail=False, url_path="username", serializer_class=serializers.ResetUsernameSerializer)

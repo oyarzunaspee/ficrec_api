@@ -87,8 +87,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         Reader.objects.create(user = new_user)
 
 class ResetPasswordSerializer(RegisterSerializer):
-    current_password = serializers.CharField(required=True, write_only=True, min_length=6)
-
     def save(self):
         user = self.context["view"].get_object()
         user.set_password(self.validated_data["password"])
