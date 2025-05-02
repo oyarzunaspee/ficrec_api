@@ -21,7 +21,7 @@ class ReaderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reader
         fields = ["uid", "username", "bio", "avatar", "collections", "highlight"]
-        read_only_fields = ['uid', "username", "collections"]
+        read_only_fields = ["uid", "username", "collections"]
 
 class CollectionSerializer(serializers.ModelSerializer):
     reader = serializers.HiddenField(default=utils_fields.CurrentReader())
@@ -34,7 +34,7 @@ class CollectionSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Collection
-        exclude = ["created", "deleted"]
+        exclude = ["created", "deleted", "id"]
         read_only_fields = ["uid", "recs", "fandom", "ship", "warnings", "tags", "chapters", "summary"]
         extra_kwargs = {'reader': {'write_only': True}}
         
