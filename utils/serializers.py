@@ -23,4 +23,4 @@ class CollectionNameSerializer(ModelSerializer):
         fields = ["uid", "name", "private", "recs"]
 
     def rec_count(self, instance):
-        return instance.collection_recs.filter(deleted=False)count() or 0
+        return instance.collection_recs.filter(deleted=False).count() or 0
