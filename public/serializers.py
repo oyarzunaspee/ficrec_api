@@ -18,6 +18,12 @@ class PublicUserSerializer(serializers.ModelSerializer):
         model = Reader
         fields = ["username", "uid", "avatar", "bio", "collections"]
 
+class CollectionUserSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.username")
+    class Meta:
+        model = Reader
+        exclude = ["id", "user"]
+
 class PublicCollectionSerializer(serializers.ModelSerializer):
     recs = fields.NestedListField(
         child = util_serializers.RecSerializer,
@@ -26,9 +32,10 @@ class PublicCollectionSerializer(serializers.ModelSerializer):
         paginated = 15,
         filter = dict(deleted=False, collection__private=False, collection__reader__user__is_active=True)
     )
+    reader = CollectionUserSerializer(read_only=True)
     class Meta:
         model = Collection
-        exclude = ["reader", "private", "created", "deleted", "id"]
+        exclude = ["private", "created", "deleted", "id"]
 
 class PublicSavedSerializer(serializers.ModelSerializer):
     saved_by = serializers.HiddenField(default=fields.CurrentReader())
