@@ -14,7 +14,6 @@ class Collection(models.Model):
     ship = models.BooleanField(default=False)
     warnings = models.BooleanField(default=False)
     tags = models.BooleanField(default=False)
-    chapters = models.BooleanField(default=False)
     summary = models.BooleanField(default=False)
     characters = models.BooleanField(default=False)
 
