@@ -10,6 +10,7 @@ from utils.mixins import ForbidListMixin
 from rest_framework.decorators import action
 from utils.serializers import RecSerializer
 from django.db.models.query import QuerySet
+from django.db.models import Q
 
 class PublicProfileViewSet(ForbidListMixin, viewsets.ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
@@ -22,6 +23,18 @@ class PublicCollectionViewSet(ForbidListMixin, viewsets.ReadOnlyModelViewSet):
     queryset = Collection.objects.filter(deleted=False, private=False, reader__user__is_active=True)
     serializer_class = serializers.PublicCollectionSerializer
     lookup_field = "uid"
+
+    @action(methods=["GET"], detail=True, url_path="recs", serializer_class=RecSerializer)
+    def get_recs(self, request, *args, **kwargs):
+        recs = self.get_object().collection_recs.filter(deleted=False, collection__reader__user__is_active=True, collection__private=False, collection__deleted=False)
+        query = request.query_params.get('query') or None
+        if query:
+            recs = recs.filter(Q(title__icontains=query) | Q(author__icontains=query) | Q(fandom__icontains=query) | Q(ship__icontains=query))
+        page = self.paginate_queryset(recs)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
 
 class SaveRecViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
     permission_classes = [IsAuthenticated]

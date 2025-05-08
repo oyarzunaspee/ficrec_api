@@ -25,13 +25,13 @@ class CollectionUserSerializer(serializers.ModelSerializer):
         exclude = ["id", "user"]
 
 class PublicCollectionSerializer(serializers.ModelSerializer):
-    recs = fields.NestedListField(
-        child = util_serializers.RecSerializer,
-        source = "collection_recs",
-        read_only = True,
-        paginated = 15,
-        filter = dict(deleted=False, collection__private=False, collection__reader__user__is_active=True)
-    )
+    # recs = fields.NestedListField(
+    #     child = util_serializers.RecSerializer,
+    #     source = "collection_recs",
+    #     read_only = True,
+    #     paginated = 15,
+    #     filter = dict(deleted=False, collection__private=False, collection__reader__user__is_active=True)
+    # )
     reader = CollectionUserSerializer(read_only=True)
     class Meta:
         model = Collection
