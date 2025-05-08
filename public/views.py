@@ -8,17 +8,17 @@ from rest_framework import viewsets, mixins, authentication
 from public import serializers
 from utils.mixins import ForbidListMixin
 from rest_framework.decorators import action
+from utils.serializers import RecSerializer
+from django.db.models.query import QuerySet
 
 class PublicProfileViewSet(ForbidListMixin, viewsets.ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
-    authentication_classes = [authentication.BasicAuthentication]
     queryset = Reader.objects.filter(user__is_active=True)
     serializer_class = serializers.PublicUserSerializer
     lookup_field = "user__username"
 
 class PublicCollectionViewSet(ForbidListMixin, viewsets.ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
-    authentication_classes = [authentication.BasicAuthentication]
     queryset = Collection.objects.filter(deleted=False, private=False, reader__user__is_active=True)
     serializer_class = serializers.PublicCollectionSerializer
     lookup_field = "uid"
