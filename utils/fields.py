@@ -1,7 +1,7 @@
 from rest_framework.serializers import ListSerializer, Field, ListSerializer
 from django.core.paginator import Paginator
 import copy
-from user_profile.models import Collection
+from django.db.models import Q
 
 class CurrentReader:
     requires_context = True
@@ -48,8 +48,7 @@ class NestedListField(CustomListField):
         data = data.filter(**self.filter)
         query = self.context['request'].query_params.get('query') or None
         if query:
-            data = data.filter(title__icontains=query, author__icontains=query, fandom__icontains=query, ship__icontains=query)
-            print(data)
+            data = data.filter(Q(title__icontains=query) | Q(author__icontains=query) | Q(fandom__icontains=query) | Q(ship__icontains=query))
         if not self.paginated:
             return super(NestedListField, self).to_representation(data)
         else:
