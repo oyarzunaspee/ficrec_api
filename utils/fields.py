@@ -49,6 +49,7 @@ class NestedListField(CustomListField):
         query = self.context['request'].query_params.get('query') or None
         if query:
             data = data.filter(title__icontains=query, author__icontains=query, fandom__icontains=query, ship__icontains=query)
+            print(data)
         if not self.paginated:
             return super(NestedListField, self).to_representation(data)
         else:
