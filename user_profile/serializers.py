@@ -81,6 +81,8 @@ class PrepareRecSerializer(serializers.Serializer):
             if key == "url":
                 soup = BeautifulSoup(regex.group(key), 'html.parser')
                 rec_data["link"] = soup.a["href"]
+            if key == "summary":
+                rec_data["summary"] = regex.group(key)
             if key in ["title", "chapters", "rating", "words"]:
                 rec_data[key] = nh3.clean(regex.group(key), tags={""})
             if key in ["author", "fandom", "warnings", "ship", "characters", "tags"]:
