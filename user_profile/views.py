@@ -10,6 +10,7 @@ from authentication.models import Reader
 from rest_framework import mixins, viewsets
 from user_profile import serializers
 from utils.mixins import CustomDestroyMixin
+from utils.serializers import RecSerializer
 
 
 class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
@@ -52,6 +53,18 @@ class CollectionViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins
         if isinstance(queryset, QuerySet):
             queryset = queryset.filter(reader__user=self.request.user)
         return queryset
+
+    
+    @action(methods=["GET"], detail=True, url_path="recs", serializer_class=RecSerializer)
+    def get_recs(self, request, *args, **kwargs):
+        recs = self.get_object().collection_recs.filter(deleted=False, collection__reader__user__is_active=True, collection__deleted=False)
+        query = request.query_params.get('query') or None
+        if query:
+            recs = recs.filter(Q(title__icontains=query) | Q(author__icontains=query) | Q(fandom__icontains=query) | Q(ship__icontains=query))
+        page = self.paginate_queryset(recs)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
 
     @action(["patch"], detail=True, url_path="toggle", serializer_class=serializers.ToggleSerializer)
     def toggle_field(self, request, *args, **kwargs):

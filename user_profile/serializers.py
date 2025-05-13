@@ -25,13 +25,13 @@ class ReaderSerializer(serializers.ModelSerializer):
 
 class CollectionSerializer(serializers.ModelSerializer):
     reader = serializers.HiddenField(default=utils_fields.CurrentReader())
-    recs = utils_fields.NestedListField(
-        child = utils_serializers.RecSerializer,
-        source = "collection_recs",
-        read_only = True,
-        paginated = 15,
-        filter = dict(deleted=False, collection__reader__user__is_active=True)
-    )
+    # recs = utils_fields.NestedListField(
+    #     child = utils_serializers.RecSerializer,
+    #     source = "collection_recs",
+    #     read_only = True,
+    #     paginated = 15,
+    #     filter = dict(deleted=False, collection__reader__user__is_active=True)
+    # )
     class Meta:
         model = Collection
         exclude = ["created", "deleted", "id"]
