@@ -62,9 +62,10 @@ class CollectionViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins
         query = request.query_params.get('query') or None
         if query:
             recs = recs.filter(Q(title__icontains=query) | Q(author__icontains=query) | Q(fandom__icontains=query) | Q(ship__icontains=query))
-
-        serializer = self.get_serializer(recs, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        page = self.paginate_queryset(recs)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
 
     @action(["patch"], detail=True, url_path="toggle", serializer_class=serializers.ToggleSerializer)
     def toggle_field(self, request, *args, **kwargs):
