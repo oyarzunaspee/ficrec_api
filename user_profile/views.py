@@ -11,6 +11,7 @@ from rest_framework import mixins, viewsets
 from user_profile import serializers
 from utils.mixins import CustomDestroyMixin
 from utils.serializers import RecSerializer
+from django.db.models import Q
 
 
 class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
