@@ -32,7 +32,7 @@ SECRET_KEY = env('DJANGO_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ["http://localhost:3000", "almondluu.pythonanywhere.com"]
+ALLOWED_HOSTS = ["http://localhost:3000", "almondluu.pythonanywhere.com", "127.0.0.1"]
 
 
 # Application definition
@@ -81,9 +81,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"
-]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://almondluu.pythonanywhere.com", "http://127.0.0.1:8000"]
+
+
+CORS_ALLOW_CREDENTIALS = True 
+
+SESSION_COOKIE_HTTPONLY = True
 
 
 ROOT_URLCONF = 'ficrec.urls'
