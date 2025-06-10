@@ -92,7 +92,7 @@ class PrepareRecSerializer(serializers.Serializer):
     
     def save(self):
         data = self.format_code()
-        serializer = utils_serializers.RecSerializer(data=data)
+        serializer = utils_serializers.RecSerializer(data=data, context=self.context)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return serializer
