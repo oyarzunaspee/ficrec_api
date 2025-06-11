@@ -16,7 +16,7 @@ class PublicUserSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Reader
-        fields = ["username", "uid", "avatar", "bio", "collections"]
+        fields = ["username", "uid", "avatar", "bio", "collections", "highlight"]
 
 class CollectionUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")
