@@ -16,13 +16,13 @@ class PublicUserSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Reader
-        fields = ["username", "uid", "avatar", "bio", "collections", "highlight"]
+        fields = ["username", "avatar", "bio", "collections", "highlight"]
 
 class CollectionUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")
     class Meta:
         model = Reader
-        exclude = ["id", "user"]
+        exclude = ["id", "user", "uid"]
 
 class PublicCollectionSerializer(serializers.ModelSerializer):
     # recs = fields.NestedListField(
