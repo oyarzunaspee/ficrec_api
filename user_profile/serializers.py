@@ -102,6 +102,15 @@ class EditRecSerializer(serializers.ModelSerializer):
         model = Rec
         fields = ["notes"]
 
+class SavedListSerializer(serializers.ModelSerializer):
+    bookmarks = serializers.SerializerMethodField()
+    class Meta:
+        model = Reader
+        fields = ["bookmarks"]
+
+    def get_bookmarks(self, obj):
+        return obj.reader_saved.all().values_list('uid', flat=True).distinct()
+
 class SavedSerializer(serializers.ModelSerializer):
     title = serializers.CharField(source="rec.title")
     author = utils_fields.TagsField(source="rec.author")
