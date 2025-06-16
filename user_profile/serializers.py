@@ -110,19 +110,17 @@ class SavedListSerializer(serializers.ModelSerializer):
 
     def get_bookmarks(self, obj):
         return obj.reader_saved.all().values_list("rec__uid", flat=True).distinct()
+    
+class SavedCollectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collection
+        fields = ["name", "about", "uid"]
 
 class SavedSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(source="rec.title")
-    author = utils_fields.TagsField(source="rec.author")
-    fandom = utils_fields.TagsField(source="rec.fandom")
-    ship = utils_fields.TagsField(source="rec.ship")
-    summary = serializers.CharField(source="rec.title")
-    collection = serializers.CharField(source="rec.collection.name")
+    collection = SavedCollectionSerializer(read_only=True)
+    rec = utils_serializers.RecSerializer(read_only=True)
     maker = serializers.CharField(source="rec.collection.reader.user.username")
-    notes = serializers.CharField(source="rec.notes")
-    link = serializers.URLField(source="rec.link")
 
     class Meta:
         model = Saved
-        exclude = ["saved_by", "created", "deleted", "rec", "id"]
-        read_only_fields = ["title", "author", "fandom", "ship", "summary", "collection", "maker", "notes", "link", "uid"]
+        fields = ["collection", "rec", "maker", "uid"]
