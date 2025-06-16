@@ -109,7 +109,7 @@ class SavedListSerializer(serializers.ModelSerializer):
         fields = ["bookmarks"]
 
     def get_bookmarks(self, obj):
-        return obj.reader_saved.all().values_list('uid', flat=True).distinct()
+        return obj.reader_saved.all().values_list('rec.uid', flat=True).distinct()
 
 class SavedSerializer(serializers.ModelSerializer):
     title = serializers.CharField(source="rec.title")
