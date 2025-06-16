@@ -42,7 +42,7 @@ class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
     @action(["get"], detail=False, url_path="bookmarks", serializer_class=serializers.SavedListSerializer)
-    def toggle_field(self, request, *args, **kwargs):
+    def get_bookmarks(self, request, *args, **kwargs):
         serializer = self.get_serializer(self.request.user.user_reader, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
