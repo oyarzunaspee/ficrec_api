@@ -46,7 +46,7 @@ class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         serializer = self.get_serializer(self.request.user.user_reader, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     
 class CollectionViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, CustomDestroyMixin):
