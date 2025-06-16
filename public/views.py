@@ -39,6 +39,7 @@ class PublicCollectionViewSet(ForbidListMixin, viewsets.ReadOnlyModelViewSet):
 class SaveRecViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
+    http_method_names = ["post"]
     serializer_class = serializers.PublicSavedSerializer
     queryset = Rec.objects.filter(deleted=False, collection__deleted=False, collection__private=False)
     lookup_field = "uid"
