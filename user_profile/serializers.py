@@ -123,4 +123,4 @@ class SavedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Saved
-        fields = ["collection", "rec", "maker", "uid"]
+        fields = ["collection", "rec", "maker", "uid", "read"]
