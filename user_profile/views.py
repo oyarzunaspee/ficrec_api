@@ -132,7 +132,7 @@ class QueryViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     serializer_class = serializers.CollectionSerializer
 
     def list(self, request, format=None):
-        query = request.query_params.get('query') or None
+        query = request.query_params.get('query').split(",") or None
         query_type = request.query_params.get('type') or None
 
         if (not query or not query_type):
