@@ -135,6 +135,9 @@ class QueryViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         query = request.query_params.get('query') or None
         query_type = request.query_params.get('type') or None
 
+        if (not query or not query_type):
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
         queryset = self.get_queryset()
 
         match query_type:
@@ -152,7 +155,5 @@ class QueryViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        if query and query_type:
-            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
-        else:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
