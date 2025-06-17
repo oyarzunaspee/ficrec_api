@@ -117,7 +117,7 @@ class SavedCollectionSerializer(serializers.ModelSerializer):
         fields = ["name", "uid"]    
 
 class SavedSerializer(serializers.ModelSerializer):
-    collection = SavedCollectionSerializer(source="rec.collection", read_only=True)
+    collection = SavedCollectionSerializer(read_only=True)
     rec = utils_serializers.RecSerializer(read_only=True)
     maker = serializers.CharField(source="rec.collection.reader.user.username")
 
