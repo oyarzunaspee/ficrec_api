@@ -124,4 +124,4 @@ class SavedViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, CustomDestroy
         instance = self.get_object()
         instance.read = not instance.read
         instance.save()
-        return Response(status=status.HTTP_204_NO_CONTENT, headers=headers)
+        return Response(status=status.HTTP_204_NO_CONTENT)
