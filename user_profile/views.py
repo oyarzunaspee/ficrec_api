@@ -121,7 +121,36 @@ class SavedViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, CustomDestroy
 
     @action(["patch"], detail=True, url_path="toggle")
     def mark_as_read(self, request, uid=None):
-        instance = self.get_object()
-        instance.read = not instance.read
-        instance.save()
+        queryset = self.get_queryset()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class QueryViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    queryset = Collection.objects.filter(deleted=False, private=False, reader__user__is_active=True)
+    serializer_class = serializers.CollectionSerializer
+
+    def list(self, request, format=None):
+        query = request.query_params.get('query') or None
+        query_type = request.query_params.get('type') or None
+
+        queryset = self.get_queryset()
+
+        match query_type:
+            case "fandom":
+                queryset = queryset.filter(Q(collection_recs__fandom__icontains=query))
+            case "ship":
+                queryset = queryset.filter(Q(collection_recs__ship__icontains=query))
+            case "author":
+                queryset = queryset.filter(Q(collection_recs__author__icontains=query))
+            case "link":
+                queryset = queryset.filter(collection_recs__link=query)
+    
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        
+        return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
