@@ -142,13 +142,14 @@ class QueryViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
 
         match query_type:
             case "fandom":
-                queryset = queryset.filter(Q(collection_recs__fandom__icontains=query))
+                queryset = queryset.filter(Q(collection_recs__fandom__icontains=query)).distinct()
             case "ship":
-                queryset = queryset.filter(Q(collection_recs__ship__icontains=query))
+                queryset = queryset.filter(Q(collection_recs__ship__icontains=query)).distinct()
             case "author":
-                queryset = queryset.filter(Q(collection_recs__author__icontains=query))
+                queryset = queryset.filter(Q(collection_recs__author__icontains=query)).distinct()
             case "link":
-                queryset = queryset.filter(collection_recs__link=query)
+                queryset = queryset.filter(collection_recs__link=query).distinct()
+        
     
         page = self.paginate_queryset(queryset)
         if page is not None:
