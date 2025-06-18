@@ -10,7 +10,7 @@ from utils.mixins import ForbidListMixin
 from rest_framework.decorators import action
 from utils.serializers import RecSerializer
 from django.db.models.query import QuerySet
-from django.db.models import Q
+from django.db.models import Q, Count
 
 class PublicProfileViewSet(ForbidListMixin, viewsets.ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
@@ -48,3 +48,60 @@ class SaveRecViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_201_CREATED)
+
+
+class QueryViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    queryset = Collection.objects.filter(deleted=False, private=False, reader__user__is_active=True)
+    serializer_class = serializers.QuerySerializer
+
+    def list(self, request, format=None):
+
+        query_search = request.query_params.get('query') or None
+        query_type = request.query_params.get('type') or None
+        tags = request.query_params.get('tags') or None
+
+        if (not query_search or not query_type):
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        final_query = Q()
+
+        if tags:
+            final_query = final_query.__and__(Q(**{"collection_recs__tags__icontains": tags.split(",")}))
+
+        queryset = self.get_queryset()
+        if query_type not in ["link", "ship"]:
+            final_query = Q()
+            for query in query_search.split(","):
+                key_string = f"collection_recs__{query_type}__icontains"
+                new_query = dict()
+                new_query[key_string] = query
+                final_query = final_query.__and__(Q(**new_query))
+        
+        elif query_type == "ship":
+            regex_search = query_search.replace(",", "|")
+            regex = r"^.*(?P<ship>.*(" + regex_search + r").*/.*(" + regex_search + r").*).*$"
+            final_query = final_query.__and__(Q(**{"collection_recs__ship__iregex": regex}))
+
+        elif query_type == "link":
+            final_query = final_query.__and__(Q(**{"collection_recs__link": query_search}))
+
+        
+
+        queryset = queryset.annotate(
+                matching_recs=Count(
+                'collection_recs',
+                filter=final_query,
+                distinct=True
+                )
+            ).filter(matching_recs__gt=0)
+        
+    
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)

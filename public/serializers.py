@@ -49,3 +49,10 @@ class PublicSavedSerializer(serializers.ModelSerializer):
                 fields=['saved_by', 'rec']
             )
         ]
+
+class QuerySerializer(serializers.ModelSerializer):
+    maker = serializers.CharField(source="reader.user.username")
+    matching_recs = serializers.IntegerField()
+    class Meta:
+        model = Collection
+        fields = ["name", "uid", "maker", "matching_recs"]
