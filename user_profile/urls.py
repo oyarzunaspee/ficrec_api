@@ -6,7 +6,6 @@ router = routers.SimpleRouter()
 router.register("user", views.ProfileViewSet)
 router.register("collections", views.CollectionViewSet)
 router.register("saved", views.SavedViewSet)
-router.register("find", views.QueryViewSet, basename="find")
 
 collection_router = routers.NestedSimpleRouter(router, "collections", lookup='collection')
 collection_router.register("recs", views.RecViewSet)

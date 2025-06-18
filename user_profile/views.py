@@ -11,7 +11,6 @@ from rest_framework import mixins, viewsets
 from user_profile import serializers
 from utils.mixins import CustomDestroyMixin
 from utils.serializers import RecSerializer
-from django.db.models import Q
 
 
 class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
@@ -123,38 +122,3 @@ class SavedViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, CustomDestroy
     def mark_as_read(self, request, uid=None):
         queryset = self.get_queryset()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-
-class QueryViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
-    queryset = Collection.objects.filter(deleted=False, private=False, reader__user__is_active=True)
-    serializer_class = serializers.CollectionSerializer
-
-    def list(self, request, format=None):
-        query = request.data["query"]
-        query_type = request.query_params.get('type') or None
-
-        if (not query or not query_type):
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        queryset = self.get_queryset()
-
-        match query_type:
-            case "fandom":
-                queryset = queryset.filter(Q(collection_recs__fandom__icontains=query)).distinct()
-            case "ship":
-                queryset = queryset.filter(Q(collection_recs__ship__icontains=query)).distinct()
-            case "author":
-                queryset = queryset.filter(Q(collection_recs__author__icontains=query)).distinct()
-            case "link":
-                queryset = queryset.filter(collection_recs__link=query).distinct()
-        
-    
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        
-        return Response(serializer.data, status=status.HTTP_200_OK)
