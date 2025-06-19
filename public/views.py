@@ -51,8 +51,7 @@ class SaveRecViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
 
 
 class QueryViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    ermission_classes = [AllowAny]
     queryset = Collection.objects.filter(deleted=False, private=False, reader__user__is_active=True)
     serializer_class = serializers.QuerySerializer
 
