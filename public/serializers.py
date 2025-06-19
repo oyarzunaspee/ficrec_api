@@ -55,4 +55,4 @@ class QuerySerializer(serializers.ModelSerializer):
     matching_recs = serializers.IntegerField()
     class Meta:
         model = Collection
-        fields = ["name", "uid", "maker", "matching_recs"]
+        fields = ["name", "about", "uid", "maker", "matching_recs"]
