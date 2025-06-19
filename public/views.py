@@ -64,14 +64,13 @@ class QueryViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         if (not query_search or not query_type):
             return Response(status=status.HTTP_204_NO_CONTENT)
         
-        final_query = Q()
+        final_query = Q(**{"collection_recs__deleted": False})
 
         if tags:
             final_query = final_query.__and__(Q(**{"collection_recs__tags__icontains": tags.split(",")}))
 
         queryset = self.get_queryset()
         if query_type not in ["link", "ship"]:
-            final_query = Q(**{"collection_recs__deleted": False})
             for query in query_search.split(","):
                 key_string = f"collection_recs__{query_type}__icontains"
                 new_query = dict()
