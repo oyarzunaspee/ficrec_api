@@ -71,7 +71,7 @@ class QueryViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
 
         queryset = self.get_queryset()
         if query_type not in ["link", "ship"]:
-            final_query = Q()
+            final_query = Q(**{"collection_recs__deleted": False})
             for query in query_search.split(","):
                 key_string = f"collection_recs__{query_type}__icontains"
                 new_query = dict()
