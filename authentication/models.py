@@ -7,7 +7,7 @@ class Reader(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_reader')
     avatar = models.TextField(blank=True, null=True)
     bio = models.TextField(blank=True, null=True, max_length=100)
-    highlight = models.CharField(blank=True, null=True)
+    highlight = models.CharField(default="default")
 
     def __str__(self):
         return self.user.username
