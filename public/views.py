@@ -78,9 +78,12 @@ class QueryViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
                 final_query = final_query.__and__(Q(**new_query))
         
         elif query_type == "ship":
-            regex_search = query_search.replace(",", "|")
-            regex = r"^.*(?P<ship>.*(" + regex_search + r").*/.*(" + regex_search + r").*).*$"
-            final_query = final_query.__and__(Q(**{"collection_recs__ship__iregex": regex}))
+            if querySearch.split(",").length == 1:
+                final_query = final_query.__and__(Q(**{"collection_recs__ship__icontains": querySearch.replace(",", "")}))
+            else:
+                regex_search = query_search.replace(",", "|")
+                regex = r"^.*(?P<ship>.*(" + regex_search + r").*/.*(" + regex_search + r").*).*$"
+                final_query = final_query.__and__(Q(**{"collection_recs__ship__iregex": regex}))
 
         elif query_type == "link":
             final_query = final_query.__and__(Q(**{"collection_recs__link": query_search}))
