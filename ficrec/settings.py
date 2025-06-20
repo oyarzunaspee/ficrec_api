@@ -84,8 +84,12 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = ['http://localhost:3000', 'http://almondluu.pythonanywhere.com', 'http://127.0.0.1:8000', 'http://ficrec.vercel.app']
 
 CSRF_TRUSTED_ORIGINS = [
-        'http://ficrec.vercel.app',
-    ]
+    'http://ficrec.vercel.app'
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://ficrec.vercel.app'
+]
 
 CORS_ALLOW_HEADERS = ['content-type']
 
