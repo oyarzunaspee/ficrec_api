@@ -27,8 +27,7 @@ class CustomTokenObtainView(TokenObtainPairView):
             raise InvalidToken(e.args[0]) from e
         
         token, refresh = serializer.validated_data
-        headers = self.get_success_headers(serializer.data)
-        response = Response(token, status=status.HTTP_200_OK, headers=headers)
+        response = Response(token, status=status.HTTP_200_OK)
         response.set_cookie("refresh", refresh, httponly=True, samesite="None", secure=True)
         return response
 
