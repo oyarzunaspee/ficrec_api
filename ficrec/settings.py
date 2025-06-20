@@ -32,7 +32,7 @@ SECRET_KEY = env('DJANGO_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ["http://localhost:3000", "almondluu.pythonanywhere.com", "ficrec.vercel.app"]
+ALLOWED_HOSTS = ['http://localhost:3000', 'almondluu.pythonanywhere.com', 'ficrec.vercel.app']
 
 
 # Application definition
@@ -81,18 +81,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://almondluu.pythonanywhere.com", "http://127.0.0.1:8000", "http://ficrec.vercel.app"]
+CORS_ALLOWED_ORIGINS = ['http://localhost:3000', 'http://almondluu.pythonanywhere.com', 'http://127.0.0.1:8000', 'http://ficrec.vercel.app']
 
-CORS_ALLOW_HEADERS = ["content-type"]
+CSRF_TRUSTED_ORIGINS = [
+        'http://ficrec.vercel.app',
+    ]
 
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
+CORS_ALLOW_HEADERS = ['content-type']
 
 CORS_ALLOW_CREDENTIALS = True 
 
