@@ -82,7 +82,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:3000', 'http://almondluu.pythonanywhere.com', 'http://127.0.0.1:8000', 'https://ficrec.vercel.app']
+CORS_ALLOWED_ORIGINS = ['https://ficrec.vercel.app']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://ficrec.vercel.app'
