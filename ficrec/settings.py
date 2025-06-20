@@ -92,6 +92,10 @@ CORS_ORIGIN_WHITELIST = [
     'https://ficrec.vercel.app'
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://ficrec.vercel.app',
+]
+
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
