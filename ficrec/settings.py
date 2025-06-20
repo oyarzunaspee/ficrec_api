@@ -15,6 +15,7 @@ from datetime import timedelta
 import os
 import dj_database_url
 import environ
+from corsheaders.defaults import default_headers
 
 env = environ.Env()
 environ.Env.read_env()
@@ -38,6 +39,7 @@ ALLOWED_HOSTS = ['http://localhost:3000', 'almondluu.pythonanywhere.com', 'ficre
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'authentication',
@@ -91,7 +92,18 @@ CORS_ORIGIN_WHITELIST = [
     'http://ficrec.vercel.app'
 ]
 
-CORS_ALLOW_HEADERS = ['content-type']
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "content-type",
+]
 
 CORS_ALLOW_CREDENTIALS = True 
 
