@@ -85,9 +85,7 @@ class CollectionViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         rec_serializer = serializer.save()
-
-        headers = self.get_success_headers(rec_serializer.data)
-        return Response(rec_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(rec_serializer.data, status=status.HTTP_201_CREATED)
     
 
 class RecViewSet(viewsets.GenericViewSet, CustomDestroyMixin, mixins.UpdateModelMixin):
