@@ -13,6 +13,7 @@ class CustomTokenSerializer(TokenObtainSerializer):
     token_class = RefreshToken
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, str]:
+        attrs["username"] = attrs["username"].lower()
         data = super().validate(attrs)
 
         refresh = self.get_token(self.user)
