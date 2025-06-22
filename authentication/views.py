@@ -40,8 +40,10 @@ class CustomTokenRefreshView(generics.GenericAPIView):
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
-            print(e.args[0], flush=True)
+            print("error")
+            print(e)
             raise InvalidToken(e.args[0]) from e
+        print("success")
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class LogoutView(generics.GenericAPIView):
