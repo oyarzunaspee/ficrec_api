@@ -17,6 +17,7 @@ class CustomTokenSerializer(TokenObtainSerializer):
         data = super().validate(attrs)
 
         refresh = self.get_token(self.user)
+        print(refresh)
 
         data["token"] = str(refresh.access_token)
 

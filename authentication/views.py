@@ -24,6 +24,7 @@ class CustomTokenObtainView(TokenObtainPairView):
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
+            print(e)
             raise InvalidToken(e.args[0]) from e
         
         token, refresh = serializer.validated_data
