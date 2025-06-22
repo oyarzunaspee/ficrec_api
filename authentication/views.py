@@ -28,7 +28,7 @@ class CustomTokenObtainView(TokenObtainPairView):
         
         token, refresh = serializer.validated_data
         response = Response(token, status=status.HTTP_200_OK)
-        response.set_cookie("refresht", refresh, httponly=True, samesite="None", secure=True)
+        response.set_cookie("refresher", refresh, httponly=True, samesite="None", secure=True)
         return response
 
 class CustomTokenRefreshView(generics.GenericAPIView):
@@ -37,7 +37,7 @@ class CustomTokenRefreshView(generics.GenericAPIView):
     serializer_class = serializers.CustomTokenRefreshSerializer
 
     def get(self, request, *args, **kwargs):
-        refresh = request.COOKIES.get("refresht")
+        refresh = request.COOKIES.get("refresher")
         serializer = serializers.CustomTokenRefreshSerializer(data=dict(), context=refresh)
         try:
             serializer.is_valid(raise_exception=True)
@@ -52,7 +52,7 @@ class LogoutView(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         response = Response(status=status.HTTP_200_OK)
-        response.set_cookie("refresht", "", httponly=True, samesite="Strict", secure=True)
+        response.set_cookie("refresher", "", httponly=True, samesite="Strict", secure=True)
         return response
 
 class ReactivateView(generics.CreateAPIView):
