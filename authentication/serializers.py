@@ -32,10 +32,8 @@ class CustomTokenRefreshSerializer(serializers.Serializer):
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, str]:
         refresh = self.token_class(self.context)
-        print(refresh, flush=True)
 
         user_id = refresh.payload.get(api_settings.USER_ID_CLAIM, None)
-        print("user", user_id)
         if user_id and (
             user := get_user_model().objects.get(
                 **{api_settings.USER_ID_FIELD: user_id}
