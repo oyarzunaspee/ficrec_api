@@ -40,6 +40,7 @@ class CustomTokenRefreshView(generics.GenericAPIView):
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
+            print(e.args[0], flush=True)
             raise InvalidToken(e.args[0]) from e
         return Response(serializer.data, status=status.HTTP_200_OK)
 
