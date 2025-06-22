@@ -18,6 +18,7 @@ class AuthView(generics.CreateAPIView):
 
 class CustomTokenObtainView(TokenObtainPairView):
     serializer_class = serializers.CustomTokenSerializer
+    authentication_classes = [BasicAuthentication]
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
 
