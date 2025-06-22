@@ -140,8 +140,7 @@ WSGI_APPLICATION = 'ficrec.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://almond:tm0MVdAEAkIXaZSwRI6lsClMF2TQSyrq@dpg-d1bmmp8dl3ps73erdi00-a/ficrec',
-        conn_max_age=600
+        default="sqlite:///" + os.path.join(BASE_DIR, "db.sqlite3")
     )
 }
 
