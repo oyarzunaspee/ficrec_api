@@ -6,5 +6,9 @@ set -o errexit
 pip install -r requirements.txt
 
 # Apply any outstanding database migrations
-python manage.py makemigrations
-python manage.py migrate
+python manage.py makemigrations authentication
+python manage.py makemigrations user_profile
+python manage.py makemigrations public
+python manage.py migrate authentication
+python manage.py migrate user_profile
+python manage.py migrate public
