@@ -33,7 +33,7 @@ SECRET_KEY = env('DJANGO_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['http://localhost:3000', 'almondluu.pythonanywhere.com', 'https://ficrec.vercel.app']
+ALLOWED_HOSTS = ['http://localhost:3000', '127.0.0.1', 'almondluu.pythonanywhere.com', 'https://ficrec.vercel.app']
 
 
 # Application definition
@@ -140,7 +140,8 @@ WSGI_APPLICATION = 'ficrec.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default="sqlite:///" + os.path.join(BASE_DIR, "db.sqlite3")
+        default='postgresql://almond:tm0MVdAEAkIXaZSwRI6lsClMF2TQSyrq@dpg-d1bmmp8dl3ps73erdi00-a/ficrec',
+        conn_max_age=600
     )
 }
 
@@ -187,17 +188,3 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "WARNING",
-    },
-}
