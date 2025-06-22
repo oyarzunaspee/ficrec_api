@@ -35,6 +35,7 @@ class CustomTokenRefreshSerializer(serializers.Serializer):
         print(refresh, flush=True)
 
         user_id = refresh.payload.get(api_settings.USER_ID_CLAIM, None)
+        print("user", user_id)
         if user_id and (
             user := get_user_model().objects.get(
                 **{api_settings.USER_ID_FIELD: user_id}

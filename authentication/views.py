@@ -36,6 +36,7 @@ class CustomTokenRefreshView(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         refresh = request.COOKIES.get("refresher")
+        print("cookie", refresh)
         serializer = serializers.CustomTokenRefreshSerializer(data=dict(), context=refresh)
         try:
             serializer.is_valid(raise_exception=True)
