@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from utils.authentication import CustomJWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from user_profile.models import Collection, Rec
 from django.db.models.query import QuerySet
@@ -15,7 +15,7 @@ from utils.serializers import RecSerializer
 
 class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [CustomJWTAuthentication]
     serializer_class = serializers.ReaderSerializer
     queryset = Reader.objects.filter(user__is_active=True)
 
@@ -52,7 +52,7 @@ class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     
 class CollectionViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, CustomDestroyMixin):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [CustomJWTAuthentication]
     serializer_class = serializers.CollectionSerializer
     queryset = Collection.objects.filter(deleted=False)
     lookup_field = "uid"
@@ -92,7 +92,7 @@ class CollectionViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins
 
 class RecViewSet(viewsets.GenericViewSet, CustomDestroyMixin, mixins.UpdateModelMixin):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [CustomJWTAuthentication]
     queryset = Rec.objects.filter(deleted=False, collection__deleted=False, collection__reader__user__is_active=True)
     serializer_class = serializers.EditRecSerializer
     lookup_field = "uid"
@@ -107,7 +107,7 @@ class RecViewSet(viewsets.GenericViewSet, CustomDestroyMixin, mixins.UpdateModel
  
 class SavedViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, CustomDestroyMixin):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [CustomJWTAuthentication]
     queryset = Saved.objects.filter(deleted=False, rec__deleted=False, rec__collection__deleted=False, rec__collection__private=False, rec__collection__reader__user__is_active=True)
     serializer_class = serializers.SavedSerializer
     lookup_field = "uid"

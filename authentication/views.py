@@ -6,7 +6,7 @@ from authentication import serializers
 
 from rest_framework import viewsets, mixins, generics
 from rest_framework.authentication import BasicAuthentication
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from utils.authentication import CustomJWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
@@ -47,7 +47,7 @@ class CustomTokenRefreshView(generics.GenericAPIView):
 
 class LogoutView(generics.GenericAPIView):
     permission_classes = [AllowAny]
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = [CustomJWTAuthentication]
     serializer_class = serializers.CustomTokenRefreshSerializer
 
     def post(self, request, *args, **kwargs):
@@ -63,7 +63,7 @@ class ReactivateView(generics.CreateAPIView):
 
 class AuthUserViewSet(mixins.DestroyModelMixin, viewsets.GenericViewSet):
     permission_classes      = [IsAuthenticated]
-    authentication_classes  = [JWTAuthentication]
+    authentication_classes  = [CustomJWTAuthentication]
     serializer_class = serializers.RegisterSerializer
 
     def get_queryset(self):

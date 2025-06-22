@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from utils.authentication import CustomJWTAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from authentication.models import Reader
 from user_profile.models import Collection, Rec
@@ -38,7 +38,7 @@ class PublicCollectionViewSet(ForbidListMixin, viewsets.ReadOnlyModelViewSet):
 
 class SaveRecViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [CustomJWTAuthentication]
     serializer_class = serializers.PublicSavedSerializer
     queryset = Rec.objects.filter(deleted=False, collection__deleted=False, collection__private=False)
     lookup_field = "uid"
