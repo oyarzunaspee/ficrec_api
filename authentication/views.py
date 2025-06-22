@@ -10,7 +10,9 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
-from django.core.cache import cache
+import logging
+
+logger = logging.getLogger(__name__)
 
 class AuthView(generics.CreateAPIView):
     permission_classes = [AllowAny]
@@ -25,8 +27,7 @@ class CustomTokenObtainView(TokenObtainPairView):
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
-            cache.set("AAAAAA", e, timeout=300)
-            print(e)
+            logger.error(e)
             raise InvalidToken(e.args[0]) from e
         
         token, refresh = serializer.validated_data
