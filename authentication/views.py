@@ -13,7 +13,6 @@ from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 class AuthView(generics.CreateAPIView):
     permission_classes = [AllowAny]
-    authentication_classes = [BasicAuthentication]
     serializer_class = serializers.RegisterSerializer
 
 class CustomTokenObtainView(TokenObtainPairView):
@@ -33,7 +32,6 @@ class CustomTokenObtainView(TokenObtainPairView):
 
 class CustomTokenRefreshView(generics.GenericAPIView):
     permission_classes = [AllowAny]
-    authentication_classes = [BasicAuthentication]
     serializer_class = serializers.CustomTokenRefreshSerializer
 
     def get(self, request, *args, **kwargs):
