@@ -52,7 +52,7 @@ class LogoutView(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         response = Response(status=status.HTTP_200_OK)
-        response.set_cookie("refresher", "", httponly=True, samesite="Strict", secure=True)
+        response.set_cookie("refresher", "", httponly=True, samesite="None", secure=True)
         return response
 
 class ReactivateView(generics.CreateAPIView):
