@@ -31,9 +31,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['http://localhost:3000', '127.0.0.1', 'almondluu.pythonanywhere.com', 'https://ficrec.vercel.app']
+ALLOWED_HOSTS = ['http://localhost:3000', '127.0.0.1', 'ficrec.onrender.com', 'almondluu.pythonanywhere.com', 'https://ficrec.vercel.app']
 
 
 # Application definition
