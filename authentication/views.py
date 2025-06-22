@@ -36,15 +36,11 @@ class CustomTokenRefreshView(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         refresh = request.COOKIES.get("refresher")
-        print("cookie", refresh)
         serializer = serializers.CustomTokenRefreshSerializer(data=dict(), context=refresh)
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
-            print("error")
-            print(e)
             raise InvalidToken(e.args[0]) from e
-        print("success")
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class LogoutView(generics.GenericAPIView):
