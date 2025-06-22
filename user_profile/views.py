@@ -30,7 +30,7 @@ class ProfileViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         return reader
     
     def list(self, request, format=None):
-        print(request.COOKIES)
+        print("cookie", request.COOKIES)
         if not request.user:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = self.get_serializer(self.request.user.user_reader)
