@@ -22,6 +22,7 @@ class AuthView(generics.CreateAPIView):
 class CustomTokenObtainView(TokenObtainPairView):
     serializer_class = serializers.CustomTokenSerializer
     def post(self, request, *args, **kwargs):
+        logger.info("AAAAAAAAAAA")
         serializer = self.get_serializer(data=request.data)
 
         try:
