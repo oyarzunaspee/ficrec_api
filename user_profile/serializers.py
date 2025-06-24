@@ -25,6 +25,7 @@ class ReaderSerializer(serializers.ModelSerializer):
 
 class CollectionSerializer(serializers.ModelSerializer):
     reader = serializers.HiddenField(default=utils_fields.CurrentReader())
+    username = serializers.CharField(source="reader.user.username")
     # recs = utils_fields.NestedListField(
     #     child = utils_serializers.RecSerializer,
     #     source = "collection_recs",
