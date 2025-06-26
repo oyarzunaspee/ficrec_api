@@ -25,3 +25,7 @@ class CollectionNameSerializer(ModelSerializer):
 
     def rec_count(self, instance):
         return instance.collection_recs.filter(deleted=False).count() or 0
+
+class PublicCollectionSerializer(CollectionNameSerializer):
+    class Meta:
+        fields = ["uid", "name", "private", "recs", "about"]

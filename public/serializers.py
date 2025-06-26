@@ -9,7 +9,7 @@ from rest_framework.validators import UniqueTogetherValidator
 class PublicUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")
     collections = fields.NestedListField(
-        child = util_serializers.CollectionNameSerializer,
+        child = util_serializers.PublicCollectionSerializer,
         source = "reader_collection",
         read_only = True,
         filter = dict(deleted=False, private=False, reader__user__is_active=True)
