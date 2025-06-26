@@ -31,7 +31,7 @@ class CustomTokenRefreshSerializer(serializers.Serializer):
     token_class = RefreshToken
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, str]:
-        refresh = self.token_class(self.context["ficrecfresher"])
+        refresh = self.token_class(self.context)
 
         user_id = refresh.payload.get(api_settings.USER_ID_CLAIM, None)
         if user_id and (
