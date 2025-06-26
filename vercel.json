@@ -1,0 +1,19 @@
+{
+    "builds": [
+        {
+            "src": "ficrec/wsgi.py",
+            "use": "@vercel/python",
+            "config": {
+                "maxLambdaSize": "15mb",
+                "runtime": "python3.13",
+                "buildCommand": "bash build.sh"
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "ficrec/wsgi.py"
+        }
+    ]
+}

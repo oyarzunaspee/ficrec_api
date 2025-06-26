@@ -33,7 +33,12 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://localhost:3000', '127.0.0.1', 'almondluu.pythonanywhere.com', 'https://ficrec.vercel.app']
+ALLOWED_HOSTS = [
+    '127.0.0.1', 
+    'almondluu.pythonanywhere.com', 
+    'https://ficrec.vercel.app',
+    '.vercel.app'
+]
 
 
 # Application definition
@@ -64,9 +69,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
-    # ),
     'DEFAULT_PAGINATION_CLASS': 'utils.pagination.CustomPagination',
     'PAGE_SIZE': 10
 }
