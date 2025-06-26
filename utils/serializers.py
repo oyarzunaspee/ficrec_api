@@ -28,4 +28,5 @@ class CollectionNameSerializer(ModelSerializer):
 
 class PublicCollectionSerializer(CollectionNameSerializer):
     class Meta:
+        model = Collection
         fields = ["uid", "name", "private", "recs", "about"]
