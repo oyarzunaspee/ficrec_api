@@ -10,6 +10,7 @@ import re
 from bs4 import BeautifulSoup
 import nh3
 
+
 class ReaderSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username", read_only=True)
     collections = utils_fields.NestedListField(
