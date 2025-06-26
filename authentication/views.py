@@ -31,7 +31,8 @@ class CustomTokenObtainView(TokenObtainPairView):
             "ficrecfresher",
             refresh,
             httponly=True,
-            samesite="None",
+            domain="vercel.app",
+            samesite="Lax",
             secure=True,
             max_age=60 * 60 * 24 * 7
         )
@@ -63,7 +64,8 @@ class LogoutView(generics.GenericAPIView):
             "ficrecfresher",
             "",
             httponly=True,
-            samesite="None",
+            domain="vercel.app",
+            samesite="Lax",
             secure=True,
             max_age=60 * 60 * 24 * 7
         )
