@@ -28,7 +28,7 @@ class CustomTokenObtainView(TokenObtainPairView):
         token, refresh = serializer.validated_data
         response = Response(token, status=status.HTTP_200_OK)
         response.set_cookie(
-            "refresher",
+            "ficrecfresher",
             refresh,
             httponly=True,
             samesite="None",
@@ -42,7 +42,7 @@ class CustomTokenRefreshView(generics.GenericAPIView):
     serializer_class = serializers.CustomTokenRefreshSerializer
 
     def get(self, request, *args, **kwargs):
-        refresh = request.COOKIES.get("refresher")
+        refresh = request.COOKIES.get("ficrecfresher")
         serializer = serializers.CustomTokenRefreshSerializer(data=dict(), context=refresh)
         try:
             serializer.is_valid(raise_exception=True)
@@ -58,7 +58,7 @@ class LogoutView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         response = Response(status=status.HTTP_200_OK)
         response.set_cookie(
-            "refresher",
+            "ficrecfresher",
             "",
             httponly=True,
             samesite="None",
