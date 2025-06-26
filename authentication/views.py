@@ -32,6 +32,7 @@ class CustomTokenObtainView(TokenObtainPairView):
             refresh,
             httponly=True,
             domain="vercel.app",
+            path="/",
             samesite="Lax",
             secure=True,
             max_age=60 * 60 * 24 * 7
@@ -65,6 +66,7 @@ class LogoutView(generics.GenericAPIView):
             "",
             httponly=True,
             domain="vercel.app",
+            path="/",
             samesite="Lax",
             secure=True,
             max_age=60 * 60 * 24 * 7
