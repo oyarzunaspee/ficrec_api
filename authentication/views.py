@@ -43,6 +43,8 @@ class CustomTokenRefreshView(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         refresh = request.COOKIES.get("ficrecfresher")
+        if not refresh:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer = serializers.CustomTokenRefreshSerializer(data=dict(), context=refresh)
         try:
             serializer.is_valid(raise_exception=True)
