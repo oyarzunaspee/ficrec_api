@@ -34,10 +34,8 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '127.0.0.1', 
-    'almondluu.pythonanywhere.com', 
-    'https://ficrec.vercel.app',
-    '.vercel.app'
+    'ficrec.top',
+    'api.ficrec.top'
 ]
 
 
@@ -87,15 +85,15 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = ['https://ficrec.vercel.app']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://ficrec.vercel.app'
+    'ficrec.top'
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    'https://ficrec.vercel.app'
+    'ficrec.top'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://ficrec.vercel.app',
+    'ficrec.top',
 ]
 
 CORS_ALLOW_METHODS = [
